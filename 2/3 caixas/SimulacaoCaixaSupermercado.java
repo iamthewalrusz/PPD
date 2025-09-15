@@ -26,10 +26,26 @@ public class SimulacaoCaixaSupermercado {
     }
 
     public double simular() {
-        double soma = 0.0;
+        double[] caixas = new double[numeroCaixas];
+
         for (int i = 0; i < mediaAtendimentos; i++) {
-            soma += tempoAtendimentoNormalTruncado();
+            double tempoCliente = tempoAtendimentoNormalTruncado();
+
+            int caixaLivre = 0;
+            for (int j = 1; j < numeroCaixas; j++) {
+                if (caixas[j] < caixas[caixaLivre]) {
+                    caixaLivre = j;
+                }
+            }
+
+            caixas[caixaLivre] += tempoCliente;
         }
-        return soma / mediaAtendimentos;
+
+        double tempoTotal = 0.0;
+        for (double t : caixas) {
+            if (t > tempoTotal) tempoTotal = t;
+        }
+
+        return tempoTotal / mediaAtendimentos;
     }
 }
